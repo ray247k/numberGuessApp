@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController
+{
     
-    //輸入數字
+    //玩家輸入數字
     @IBOutlet weak var putin: UITextField!
     
     //提示
@@ -32,10 +33,10 @@ class ViewController: UIViewController {
     var chance = 6
 
     //最大範圍提示
-    var upbound = 100
+    var upbound : Int = 100
 
     //最小範圍提示
-    var lowbound = 0
+    var lowbound : Int = 0
     
     /**
      * 按鈕按下之後檢查猜測次數
@@ -43,7 +44,8 @@ class ViewController: UIViewController {
      * @parma putin.text 輸入的數字
      * @result hint.text 提示訊息
      */
-    @IBAction func gogo(_ sender: Any) {
+    @IBAction func gogo(_ sender: Any)
+    {
         //收鍵盤
         putin.resignFirstResponder()
         
@@ -63,13 +65,13 @@ class ViewController: UIViewController {
         else if chance > 0
         {
             let inputInt = Int(putin.text!)!
-            check(test : inputInt)
+            check(inputTest : inputInt)
         }
         
         //次數 =< 0
         else
         {
-            hint.text = "小狐狸哭哭 沒機會了"
+            hint.text = "小狐狸哭爸 沒機會了"
             tear.isHidden = false
         }
     }
@@ -87,76 +89,80 @@ class ViewController: UIViewController {
     /**
      * 檢查輸入是否為目標數值
      *
-     * @parma
-     * @return
+     * @parma int test:Int 
+     * @return string 回應提示
      */
-    func check(test:Int)
+    func check(inputTest:Int)
     {
-        if test > 50
+        if inputTest > 100
         {
             hint.text = "猜的數字超出範圍嚕!\(getBoundaryText())"
             chance -= 1
             time.text = String(chance)
     
         }
-        else if test > answer
+            
+        else if inputTest > answer
         {
-            upbound = test - 1
+            upbound = inputTest - 1
             hint.text = "沒有這麼多朵\(getBoundaryText())"
             chance -= 1
-            guessTime.text = String(chance)
+            time.text = String(chance)
     
         }
-        else if test < answer
+            
+        else if inputTest < answer
         {
-            lowbound = test + 1
+            lowbound = inputTest + 1
             hint.text = "太少朵了吧!\(getBoundaryText())"
             chance -= 1
-            guessTime.text = String(chance)
+            time.text = String(chance)
         }
+
         else
         {
             hint.text = "答對了!就是\(answer)朵 送你一朵玫瑰"
-            rose.isHidden = false
-    }
+            flower.isHidden = false
+        }
     }
 
-    @IBAction func re(_ sender: Any) {
-    
-    hint.text = "放膽去猜!!"
-    putin.text = "0"
-    chance = 6
-    upbound = 50
-    lowbound = 0
-    answer = Int(arc4random_uniform(50))
-    guessTime.text = String(chance)
-    rose.isHidden = true
-    tear.isHidden = true
-    
+    /**
+     * 重置按鈕
+     * 
+     * 重置可猜的次數、圖片、範圍還有重設答案
+     * @parma void
+     * @return string 重置提示
+     */
+    @IBAction func re(_ sender: Any)
+    {
+        hint.text = "放膽去猜!!"
+        putin.text = "0"
+        chance = 6
+        upbound = 100
+        lowbound = 0
+        answer = Int(arc4random_uniform(100))
+        time.text = String(chance)
+        flower.isHidden = true
+        tear.isHidden = true
     }
     
     
     //按按鈕收鍵盤
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
-    inputNumber.resignFirstResponder()
-    return true
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        putin.resignFirstResponder()
+        return true
     }
-    
-    
-    
-    }
-    
-    
-    
-        
-    
-    
-    override func viewDidLoad() {
+
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
+        answer = Int(arc4random_uniform(100))
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
